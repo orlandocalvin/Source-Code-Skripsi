@@ -1,0 +1,572 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* ===== Global Reset & Root Variables ===== */
+:root {
+    --primary-color: #3498db;
+    --accent-color: #2ecc71;
+    --bg-color: #f0f2f5;
+    --text-color: #333;
+    --card-shadow: rgba(140, 140, 140, 0.5);
+    --border-color: #ced4da;
+    --light-bg: #f8f9fa;
+    --medium-bg: #e9ecef;
+    --dark-bg: #d8dcdf;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== Base Body & Typography ===== */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    width: 100dvw;
+    height: 100dvh;
+    user-select: none;
+    overflow: hidden;
+}
+
+/* ===== Main Layout Structure ===== */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    width: 100dvw;
+    background: #fff;
+    overflow: hidden;
+}
+
+.app-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 15px;
+}
+
+.header-title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-logo {
+    font-size: clamp(2rem, 8vmin, 3rem);
+    margin-top: -.25rem;
+}
+
+.header-text h1 {
+    font-size: clamp(0.9rem, 3.5vmin, 1.2rem);
+    font-weight: 500;
+    margin: 0;
+}
+
+.header-text p {
+    font-size: clamp(0.7rem, 2.5vmin, 0.9rem);
+    margin: 0;
+    opacity: 0.9;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-actions label[for="gestureToggle"] {
+    cursor: pointer;
+}
+
+/* ===== Connection Status ===== */
+#connectionStatus {
+    display: flex;
+    align-items: center;
+    gap: clamp(5px, 1.5vw, 10px);
+    padding: clamp(4px, 1vmin, 8px) clamp(8px, 2vw, 16px);
+    border-radius: 50px;
+    font-weight: 500;
+    transition: background-color 0.5s ease, color 0.5s ease;
+
+    font-size: clamp(0.7rem, 2.2vmin, 0.95rem);
+}
+
+.status-dot {
+    width: clamp(8px, 2.2vmin, 12px);
+    height: clamp(8px, 2.2vmin, 12px);
+    border-radius: 50%;
+    transition: background-color 0.5s ease;
+    flex-shrink: 0;
+}
+
+#connectionStatus.status-disconnected {
+    background-color: #e74c3c;
+    color: white;
+}
+
+#connectionStatus.status-disconnected .status-dot {
+    background-color: #c0392b;
+}
+
+#connectionStatus.status-waiting {
+    background-color: #f1c40f;
+    color: #333;
+}
+
+#connectionStatus.status-waiting .status-dot {
+    background-color: #f39c12;
+    animation: pulse 1.5s infinite;
+}
+
+#connectionStatus.status-connected {
+    background-color: #2ecc71;
+    color: white;
+}
+
+#connectionStatus.status-connected .status-dot {
+    background-color: #27ae60;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.controls-area {
+    display: flex;
+    flex-grow: 1;
+    padding: 15px;
+    gap: 10px;
+    background-color: var(--medium-bg);
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+}
+
+.column-left {
+    flex: 1;
+    min-width: 80px;
+}
+
+.controls-area.gesture-mode-active .column-left {
+    /* Give more space to dashboard */
+    flex-grow: 1.5;
+}
+
+.column-middle {
+    flex: 1.25;
+    min-width: 150px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 5px;
+}
+
+.middle-controls-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.column-right {
+    flex: 1.5;
+    min-width: 80px;
+}
+
+/* ===== Layout Mode Containers ===== */
+.manual-controls-left,
+.manual-controls-right,
+.gesture-dashboard-left,
+.gesture-dashboard-right {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 15px;
+}
+
+.manual-controls-left,
+.gesture-dashboard-left {
+    flex-direction: column;
+}
+
+.gesture-dashboard-left,
+.gesture-dashboard-right {
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===== Generic Components: Buttons, Toggles, etc. ===== */
+.control-btn {
+    background-color: var(--dark-bg);
+    border: none;
+    border-radius: 8px;
+    color: #2c3e50;
+    font-size: clamp(28px, 7vh, 52px);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    flex-grow: 1;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.1s;
+}
+
+.control-btn:hover {
+    background-color: #c8cdd2;
+}
+
+.control-btn:active,
+.control-btn.btn-locked {
+    background-color: #b8bdc2;
+    transform: scale(0.95);
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.icon-buttons-pair {
+    display: flex;
+    justify-content: center;
+    gap: clamp(10px, 2vw, 20px);
+    width: 100%;
+}
+
+.icon-btn {
+    background-color: var(--light-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: clamp(1.5rem, 6vh, 2rem);
+    width: clamp(70px, 15vw, 110px);
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.1s;
+    cursor: pointer;
+}
+
+.icon-btn:hover {
+    background-color: var(--medium-bg);
+}
+
+.icon-btn:active {
+    background-color: #dde1e5;
+    transform: scale(0.92);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-lever {
+    position: absolute;
+    inset: 0;
+    background-color: #ccc;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.switch-lever:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+input:checked+.switch-lever {
+    background-color: var(--primary-color);
+}
+
+input:checked+.switch-lever:before {
+    transform: translateX(22px);
+}
+
+.gesture-toggle-switch input:checked+.switch-lever {
+    background-color: var(--accent-color);
+}
+
+/* ===== Manual Mode Specific Styles ===== */
+.column-left .control-btn {
+    min-height: 70px;
+}
+
+.column-right .control-btn {
+    min-height: calc(70px * 2 + 10px);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.column-right .control-btn .icon-left,
+.column-right .control-btn .icon-right {
+    rotate: -90deg;
+}
+
+.lock-mechanism {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.05em;
+    gap: 10px;
+}
+
+.lock-mechanism label[for="lockToggle"] {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 100px;
+    cursor: pointer;
+}
+
+/* ===== Gesture Mode Components ===== */
+.feedback-display {
+    width: 95%;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(2em, 6vh, 5em);
+    color: #ecf0f1;
+}
+
+.feedback-display.manual-mode {
+    min-height: 30vmin;
+}
+
+.card-orientation-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: white;
+    box-shadow: 2px 2px 12px 1px var(--card-shadow);
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+}
+
+.orientation-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-height: 0;
+    background-color: #ecedee;
+    border-radius: 6px;
+    padding: 5px 10px;
+    justify-content: space-between;
+}
+
+.orientation-item .gauge-wrapper {
+    flex: 0 0 50%;
+    position: relative;
+}
+
+.gauge-label {
+    position: absolute;
+    font-size: clamp(0.5rem, 2.5vmin, 0.95rem);
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.gauge-label-min {
+    bottom: 3%;
+    left: 12%;
+}
+
+.gauge-label-max {
+    bottom: 3%;
+    right: 12%;
+}
+
+.orientation-item .orientation-details {
+    flex: 1;
+    text-align: center;
+}
+
+.orientation-title {
+    font-size: clamp(1rem, 3.5vmin, 1.3rem);
+    color: #003366;
+    margin-bottom: 5px;
+}
+
+.orientation-reading {
+    font-size: clamp(1.2rem, 4.5vmin, 2rem);
+    font-weight: 500;
+}
+
+.orientation-reading span {
+    transition: color 0.2s ease-in-out;
+}
+
+#roll-gauge,
+#pitch-gauge {
+    width: 100%;
+    display: block;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    max-width: 210px;
+}
+
+.orientation-pad {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: var(--dark-bg);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.pad-background-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* SVG Style */
+.pad-background-svg .line {
+    stroke: rgba(44, 62, 80, 0.4);
+    stroke-width: 0.5;
+    stroke-dasharray: 2 2;
+}
+
+.pad-background-svg .icon {
+    font-size: .75em;
+    fill: rgba(44, 62, 80, 0.6);
+    font-family: sans-serif;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    transition: all 0.2s ease-in-out;
+}
+
+.pad-background-svg .icon.icon-active {
+    fill: var(--primary-color);
+}
+
+#pad-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: clamp(20px, 10%, 40px);
+    height: clamp(20px, 10%, 40px);
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transform: translate(-50%, -50%);
+    z-index: 2;
+
+    transition: top 30ms linear, left 30ms linear, background-color 0.3s, box-shadow 0.3s ease-in-out;
+}
+
+#pad-indicator.indicator-active {
+    box-shadow: 0 0 12px 4px hsla(204, 70%, 53%, 0.7);
+}
+
+
+/* ===== State & Layout Helper Classes ===== */
+.hidden {
+    display: none !important;
+}
+
+.controls-area.gesture-mode-active .lock-mechanism,
+.controls-area.gesture-mode-active .manual-controls-left,
+.controls-area.gesture-mode-active .manual-controls-right {
+    display: none;
+}
+
+.controls-area:not(.gesture-mode-active) .gesture-dashboard-left,
+.controls-area:not(.gesture-mode-active) .gesture-dashboard-right {
+    display: none;
+}
+
+.controls-area.gesture-mode-active .feedback-display {
+    flex-grow: 1;
+    max-height: 35vmin;
+}
+
+.controls-area.gesture-mode-active .feedback-display {
+    flex-grow: 1;
+    min-height: 0;
+}
+
+
+/* ===== Responsive Design ===== */
+@media (orientation: landscape) {
+    .header-logo {
+        margin-top: -1rem;
+    }
+
+    .feedback-display {
+        font-size: clamp(4em, 10vw, 10em);
+        min-height: 120px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.35);
+    }
+}
+
+@media (orientation: portrait) {
+    .app-container {
+        width: 100dvh;
+        height: 100dvw;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(90deg);
+        transform-origin: center center;
+    }
+
+    .manual-controls-left,
+    .manual-controls-right {
+        gap: 10px;
+    }
+
+    .gauge-label-min,
+    .gauge-label-max {
+        bottom: 0;
+    }
+
+    .feedback-display {
+        width: 85%;
+        font-size: clamp(2em, 18vmin, 6em);
+        box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.35);
+    }
+}
